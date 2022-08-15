@@ -1,3 +1,4 @@
+import * as XLSX from 'xlsx'
 
 function App() {
   const data = [
@@ -32,6 +33,16 @@ function App() {
     ]
   ]
 
+  const handleOnExport = () => {
+    let wb = XLSX.utils.book_new();
+    data.map((e, i) => {
+      const ws = XLSX.utils.json_to_sheet(e);
+      XLSX.utils.book_append_sheet(wb,ws,`sheet ${i}`);
+    })
+
+    XLSX.writeFile(wb, "excel.xlsx");
+  }
+
   return (
    <div>
     <h1>React Export Excel</h1>
@@ -50,7 +61,7 @@ function App() {
         </ul>
       </>
     ))}
-    <button onClick={()=>console.log('Exporting...')}>Export</button>
+    <button onClick={handleOnExport}>Export</button>
    </div>
   );
 }
